@@ -59,13 +59,13 @@ const clickBuyShoesCallback = (e) => {
 
   // Uncomment below 👇 to place your order and send the results
   // to the Jumbotron.
-  // placedOrder
-  //   .then((response) => {
-  //     sendToJumbotron(response);
-  //   })
-  //   .catch((error) => {
-  //     sendToJumbotron(error);
-  //   });
+  placedOrder
+    .then((response) => {
+      sendToJumbotron(response);
+    })
+    .catch((error) => {
+      sendToJumbotron(error);
+    });
 
     // @todo keep this sendToJumbotron at the bottom of the function.
     // Notice how it shows up in the Jumbotron before the delivery
@@ -85,9 +85,10 @@ const fetchFromItunesSendResponseCallback = () => {
   // Jumbotron.
   // @see https://www.javascripttutorial.net/javascript-fetch-api/
   fetch('https://itunes.apple.com/search?term=hoobastank')
-  .then((response) => {
+    .then((response) => {
     // @todo, send the response to the Jumbotron.
-  });
+      sendToJumbotron(response);
+    });
 }
 
 const fetchFromItunesSendJsonCallback = () => {
@@ -101,8 +102,12 @@ const fetchFromItunesSendJsonCallback = () => {
   // to the Jumbotron.
   //@see   // @see https://www.javascripttutorial.net/javascript-fetch-api/
   fetch('https://itunes.apple.com/search?term=hoobastank')
-    //.then((res) => ??? do something here)
-    // .then((json) => ??? do something here);
+    .then((res) => {
+      return res.json();
+    })
+    .then((json) => {
+      sendToJumbotron(json);
+    });
 }
 
 // The need to chain two uses of then() might be confusing. It would be normal to ask
@@ -124,10 +129,19 @@ const fetchFromYesNoSendResponseCallback = () => {
   // @todo,similar to fetchFromItunesSendResponseCallback()
   // fetch https://yesno.wtf/api
   // send the response to the jumbotron
+  fetch('https://yesno.wtf/api')
+    .then((response) => {
+      sendToJumbotron(response);
+    });
 }
 
 const fetchFromYesNoSendJsonCallback = () => {
   // @todo simlar to fetchFromItunesSendJsonCallback()
   // fetch  https://yesno.wtf/api
   // send the parsed JSON to the jumbotron.
+  fetch('https://yesno.wtf/api')
+    .then((response) => response.json())
+    .then((json) => {
+      sendToJumbotron(json);
+    });
 }
