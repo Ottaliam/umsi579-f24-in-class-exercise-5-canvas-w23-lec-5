@@ -30,8 +30,52 @@ const addDogs = () => {
   // TIP - in promises.js there's a section that says
   // "So, when in doubt, start with this snippet:"
   // Using that snippet will make things easier...
+  dogGrid.innerHTML = '';
+  // single dog version
+  // fetch('https://dog.ceo/api/breeds/image/random')
+  //   .then((response) => response.json())
+  //   .then((json) => {
+  //     if (json.status === "success") {
+  //       imgURL = json.message;
+  //       dogGrid.innerHTML = `<div class="col p-0"><img src="${imgURL}" alt="dog" /></div>`;
+  //     } else {
+  //       console.log("Error fetching dog image");
+  //     }
+  //   });
+  // multiple dogs version - with for loop
+  // const dogCount = document.querySelector('#how-many').valueAsNumber;
+  // for (let i = 0; i < dogCount; i++) {
+  //   fetch('https://dog.ceo/api/breeds/image/random')
+  //     .then((response) => response.json())
+  //     .then((json) => {
+  //       if (json.status === "success") {
+  //         imgURL = json.message;
+  //         dogGrid.innerHTML += `<div class="col p-0"><img src="${imgURL}" alt="dog" /></div>`;
+  //       } else {
+  //         console.log("Error fetching dog image");
+  //       }
+  //     });
+  // }
+  // multiple dogs version that add them to page together - given by chatGPT
+  const dogCount = document.querySelector('#how-many').valueAsNumber;
+  const fetchDogImage = () => 
+    fetch('https://dog.ceo/api/breeds/image/random')
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.status === "success") {
+          return json.message;
+        } else {
+          console.log("Error fetching dog image");
+        }
+      });
+  Promise.all(Array.from({length: dogCount}, fetchDogImage))
+    .then((images) => {
+      dogGrid.innerHTML = images.map((imgURL) => `<div class="col p-0"><img src="${imgURL}" alt="dog" /></div>`).join();
+    })
+  
+    // which one is better? load one-by-one or wait until everything is fetched and update them together?
 }
 // @todo FIRST add a click listener for #more-dogs that triggers addDogs()
-
+document.querySelector('#more-dogs').addEventListener('click', addDogs);
 
 
